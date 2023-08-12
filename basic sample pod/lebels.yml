@@ -1,0 +1,12 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: testlabels
+  labels:
+    env: development
+    class: Pod
+spec:
+  containers:
+    - name: c1
+      image: ubuntu
+      command: ["/bin/bash","-c", "while true; do echo sudarshan; sleep 5; done"]

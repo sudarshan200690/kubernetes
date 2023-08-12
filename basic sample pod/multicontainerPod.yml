@@ -1,0 +1,15 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: testpod2
+spec:
+  restartPolicy: Never
+  containers:
+    - name: c1
+      image: ubuntu
+      command: ["/bin/bash", "-c", "while true; do echo sudarshan; sleep 5 ; done"]
+    - name: c2
+      image: httpd
+      ports:
+        - containerPort: 80
+
