@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: testservice
+spec:
+  selector:
+    name: deployment            # selector should match with pod labels
+  ports:
+    - port: 80         # container port exposed
+      targetPort: 80    # pod port or name
+  type: NodePort       #service type for ex- ClusterIP, NodePort, LoadBalancer, Headless
