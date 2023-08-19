@@ -1,15 +1,4 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: mysql
-spec: 
-  ports:
-    - port: 3306
-  selector: 
-    app: mysql
-  clusterIP: None
----
-apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql
@@ -17,23 +6,22 @@ spec:
   selector:
     matchLabels:
       app: mysql
-  strategy: recreate
-template:
-  metadata:
-    labels:
-      app: mysql
-  spec:
-    containers: 
-      - image: mysql:5.6
-        name: mysql
-        # Use secret in real usage
-        env:
-          - name: MYSQL_ROOT_PASSWORD
-            value: password
-        ports:
-          - containerPort: 3306
-            name: mysql
-        volumeMounts:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:5.6
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: password
+          volumeMounts:
           - name: mysql-configmap-volume
             path: /etc/mysql/conf.d
             subpath: binlog_format.cnf
@@ -44,3 +32,14 @@ template:
           items:
             - key: mysql_binlog_format.cnf
               path: binlog_format.cnf
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec: 
+  ports:
+    - port: 3306
+  selector: 
+    app: mysql
+  clusterIP: None
