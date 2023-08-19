@@ -1,0 +1,15 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+ name: testcron
+spec:
+ schedule: "* * * * *"
+ jobTemplate:
+   spec:
+     template:
+       spec:
+         containers:
+         - image: ubuntu
+           name: testcron
+           command: ["/bin/bash", "-c", "echo sudarshan; sleep 5"]
+         restartPolicy: Never
