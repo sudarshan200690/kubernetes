@@ -20,24 +20,32 @@ spec:
             - name: MYSQL_ROOT_PASSWORD
               value: password
           volumeMounts:
-          - name: mysql-configmap-volume
-            path: /etc/mysql/conf.d
-            subpath: binlog_format.cnf
-    volumes:
-      - name: mysql-configmap-volume
-        configMap:
-          name: mysql-configmap
-          items:
-            - key: mysql_binlog_format.cnf
-              path: binlog_format.cnf
+            - name: mysql-configmap-volume
+              mountPath: /etc/mysql/conf.d
+            - name: mysql-binlog-configmap-volume
+              mountPath: /etc/mysql/binlog
+      volumes:
+        - name: mysql-configmap-volume
+          configMap:
+            name: mysql-configmap
+            items:
+              - key: mysql_binlog_format.cnf
+                path: binlog_format.cnf
+        - name: mysql-binlog-configmap-volume
+          configMap:
+            name: mysql-configmap
+            items:
+              - key: mysql_binlog_file.cnf
+                path: binlog_file.cnf
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: mysql
-spec: 
+spec:
   ports:
     - port: 3306
-  selector: 
+  selector:
     app: mysql
   clusterIP: None
+

@@ -8,3 +8,6 @@ data:
   mysql_binlog_format.cnf: |
     [mysqlId]
     binlog-format=mixed
+  mysql_binlog_file.cnf: |
+    [mysqlId]
+    binlog-file=mysql.log
